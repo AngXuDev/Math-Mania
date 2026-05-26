@@ -4,7 +4,10 @@ import '/src/utility/math_util.dart';
 class PicturePuzzleRepository {
   static List<int> listHasCode = <int>[];
 
-  static getPicturePuzzleDataList(int level) {
+  static getPicturePuzzleDataList(
+    int level, {
+    bool includeMultiplicationDivision = true,
+  }) {
     if (level == 1) {
       listHasCode.clear();
     }
@@ -12,8 +15,11 @@ class PicturePuzzleRepository {
     List<PicturePuzzle> list = <PicturePuzzle>[];
     while (list.length < 5) {
       List<PicturePuzzleShapeList> puzzleList = <PicturePuzzleShapeList>[];
-      List<PicturePuzzleData> picturePuzzleDataList =
-          getNewShapeMatrix(level, list.length);
+      List<PicturePuzzleData> picturePuzzleDataList = getNewShapeMatrix(
+        level,
+        list.length,
+        includeMultiplicationDivision: includeMultiplicationDivision,
+      );
 
       picturePuzzleDataList
           .asMap()
@@ -63,7 +69,11 @@ class PicturePuzzleRepository {
     return list;
   }
 
-  static List<PicturePuzzleData> getNewShapeMatrix(int level, int index) {
+  static List<PicturePuzzleData> getNewShapeMatrix(
+    int level,
+    int index, {
+    bool includeMultiplicationDivision = true,
+  }) {
     List<PicturePuzzleData> list = <PicturePuzzleData>[];
     List<String> listDigit = <String>[];
     List<String> listSign = <String>[];
@@ -103,9 +113,11 @@ class PicturePuzzleRepository {
         case 2:
         case 3:
         case 4:
-          listSign = ["+", "-", "*"]
-            ..shuffle()
-            ..removeAt(1);
+          listSign = includeMultiplicationDivision
+              ? (["+", "-", "*"]
+                ..shuffle()
+                ..removeAt(1))
+              : ["+", "-"];
 
           while (listDigit.length < 3) {
             MathUtil.generateRandomNumber(level, 10 + level, 3)
@@ -117,9 +129,11 @@ class PicturePuzzleRepository {
           }
           list.add(getRowFirst(listShape[0], "+", "+", listDigit[0]));
           list.add(getRowSecond(listShape[0], listSign[0], listShape[1], "+",
-              listDigit[0], listDigit[1], listDigit[2]));
+              listDigit[0], listDigit[1], listDigit[2],
+              includeMultiplicationDivision: includeMultiplicationDivision));
           list.add(getRowThird(listSign[0], listShape[1], "-", listShape[2],
-              listDigit[0], listDigit[1], listDigit[2]));
+              listDigit[0], listDigit[1], listDigit[2],
+              includeMultiplicationDivision: includeMultiplicationDivision));
           list.add(getRowLast(listShape[0], "+", listShape[1], "+",
               listShape[2], listDigit[0], listDigit[1], listDigit[2]));
           break;
@@ -132,13 +146,17 @@ class PicturePuzzleRepository {
           }
         });
       }
-      listSign = ["+", "-", "*"]..shuffle();
+      listSign = includeMultiplicationDivision
+          ? (["+", "-", "*"]..shuffle())
+          : ["+", "-", "+"];
       list.add(
           getRowFirst(listShape[0], listSign[0], listSign[2], listDigit[0]));
       list.add(getRowSecond(listShape[0], listSign[0], listShape[1], "+",
-          listDigit[0], listDigit[1], listDigit[2]));
+          listDigit[0], listDigit[1], listDigit[2],
+          includeMultiplicationDivision: includeMultiplicationDivision));
       list.add(getRowThird(listSign[0], listShape[1], "-", listShape[2],
-          listDigit[0], listDigit[1], listDigit[2]));
+          listDigit[0], listDigit[1], listDigit[2],
+          includeMultiplicationDivision: includeMultiplicationDivision));
       list.add(getRowLast(listShape[0], listSign[0], listShape[1], listSign[1],
           listShape[2], listDigit[0], listDigit[1], listDigit[2]));
     }
@@ -160,14 +178,17 @@ class PicturePuzzleRepository {
   }
 
   static PicturePuzzleData getRowSecond(
-      PicturePuzzleShapeType picturePuzzleShapeType1,
-      String sign1,
-      PicturePuzzleShapeType picturePuzzleShapeType2,
-      String sign2,
-      String op1,
-      String op2,
-      String op3) {
-    if ((sign1 == "-" && sign2 == "+") || sign1 == "+" && sign2 == "-") {
+    PicturePuzzleShapeType picturePuzzleShapeType1,
+    String sign1,
+    PicturePuzzleShapeType picturePuzzleShapeType2,
+    String sign2,
+    String op1,
+    String op2,
+    String op3, {
+    bool includeMultiplicationDivision = true,
+  }) {
+    if (includeMultiplicationDivision &&
+        ((sign1 == "-" && sign2 == "+") || sign1 == "+" && sign2 == "-")) {
       sign1 = "*";
     }
     return PicturePuzzleData(
@@ -180,14 +201,17 @@ class PicturePuzzleRepository {
   }
 
   static PicturePuzzleData getRowThird(
-      String sign1,
-      PicturePuzzleShapeType picturePuzzleShapeType2,
-      String sign2,
-      PicturePuzzleShapeType picturePuzzleShapeType3,
-      String op1,
-      String op2,
-      String op3) {
-    if ((sign1 == "-" && sign2 == "+") || sign1 == "+" && sign2 == "-") {
+    String sign1,
+    PicturePuzzleShapeType picturePuzzleShapeType2,
+    String sign2,
+    PicturePuzzleShapeType picturePuzzleShapeType3,
+    String op1,
+    String op2,
+    String op3, {
+    bool includeMultiplicationDivision = true,
+  }) {
+    if (includeMultiplicationDivision &&
+        ((sign1 == "-" && sign2 == "+") || sign1 == "+" && sign2 == "-")) {
       sign2 = "*";
     }
 

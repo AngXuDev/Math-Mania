@@ -38,25 +38,30 @@ class MathUtil {
     return result;
   }
 
-  static String generateRandomSign() {
-    var x = ['/', '*', '-', '+'];
+  static String generateRandomSign({
+    bool includeMultiplicationDivision = true,
+  }) {
+    var x = includeMultiplicationDivision ? ['/', '*', '-', '+'] : ['-', '+'];
     final _random = new Random();
-    int result = _random.nextInt(4);
+    int result = _random.nextInt(x.length);
     return x[result];
   }
 
-  static List<String> generateRandomSign1(int count) {
+  static List<String> generateRandomSign1(
+    int count, {
+    bool includeMultiplicationDivision = true,
+  }) {
     var listOfSign = <String>[];
-    var list = [
-      ['/', '*', '-', '+'],
-      ['/', '*', '-', '+'],
-      ['/', '*', '-', '+'],
-      ['/', '*', '-', '+']
-    ];
+    var sourceSigns =
+        includeMultiplicationDivision ? ['/', '*', '-', '+'] : ['-', '+'];
+    var list = List<List<String>>.generate(
+      sourceSigns.length,
+      (_) => sourceSigns,
+    );
 
     while (listOfSign.length < count) {
-      int row = Random().nextInt(4);
-      int col = Random().nextInt(4);
+      int row = Random().nextInt(sourceSigns.length);
+      int col = Random().nextInt(sourceSigns.length);
       if (listOfSign.length == 0 || list[row][col] != listOfSign.last)
         listOfSign.add(list[row][col]);
     }
@@ -150,9 +155,16 @@ class MathUtil {
     }
   }
 
-  static Expression? getMixExp(int min, int max) {
+  static Expression? getMixExp(
+    int min,
+    int max, {
+    bool includeMultiplicationDivision = true,
+  }) {
     int operand = int.parse(MathUtil.generateRandomNumber(min, max, 1).first);
-    var signList = MathUtil.generateRandomSign1(2);
+    var signList = MathUtil.generateRandomSign1(
+      2,
+      includeMultiplicationDivision: includeMultiplicationDivision,
+    );
     String firstSign = (MathUtil.getPrecedence(signList[0]) >=
             MathUtil.getPrecedence(signList[1]))
         ? signList[0]
@@ -278,7 +290,10 @@ class MathUtil {
     return finalExpression;
   }
 
-  static Expression? getMentalExp(int level) {
+  static Expression? getMentalExp(
+    int level, {
+    bool includeMultiplicationDivision = true,
+  }) {
     int min;
     int max;
     if (level <= 3) {
@@ -292,7 +307,10 @@ class MathUtil {
       max = level = 30;
     }
     int operand = int.parse(MathUtil.generateRandomNumber(min, max, 1).first);
-    var signList = MathUtil.generateRandomSign1(2);
+    var signList = MathUtil.generateRandomSign1(
+      2,
+      includeMultiplicationDivision: includeMultiplicationDivision,
+    );
     Expression? expression;
     Expression? finalExpression;
 
@@ -360,12 +378,19 @@ class MathUtil {
     return finalExpression;
   }
 
-  static List<Expression> getMathPair(int level, int count) {
+  static List<Expression> getMathPair(
+    int level,
+    int count, {
+    bool includeMultiplicationDivision = true,
+  }) {
     var list = <Expression>[];
     int min = level == 1 ? 1 : (5 * level) - 5; //1 5 10 15 20 25
     int max = level == 1 ? 10 : (10 * level); //10 20 30 40 50 60
     while (list.length < count) {
-      MathUtil.generateRandomSign1(count - list.length).forEach((String sign) {
+      MathUtil.generateRandomSign1(
+        count - list.length,
+        includeMultiplicationDivision: includeMultiplicationDivision,
+      ).forEach((String sign) {
         Expression? expression;
         if (level <= 2) {
           switch (sign) {
@@ -421,12 +446,19 @@ class MathUtil {
     return list;
   }
 
-  static List<Expression> generate(int level, int count) {
+  static List<Expression> generate(
+    int level,
+    int count, {
+    bool includeMultiplicationDivision = true,
+  }) {
     var list = <Expression>[];
     int min = level == 1 ? 1 : (5 * level) - 5; //1 5 10 15 20 25
     int max = level == 1 ? 10 : (10 * level); //10 20 30 40 50 60
     while (list.length < count) {
-      MathUtil.generateRandomSign1(count - list.length).forEach((String sign) {
+      MathUtil.generateRandomSign1(
+        count - list.length,
+        includeMultiplicationDivision: includeMultiplicationDivision,
+      ).forEach((String sign) {
         Expression? expression;
         if (level <= 2) {
           switch (sign) {
@@ -452,18 +484,34 @@ class MathUtil {
               expression = MathUtil.getMinusSignExp(min, max);
               break;
             case "*":
-              expression = MathUtil.getMixExp(1, 15);
+              expression = MathUtil.getMixExp(
+                1,
+                15,
+                includeMultiplicationDivision: includeMultiplicationDivision,
+              );
               break;
             case "/":
               expression = MathUtil.getDivideSignExp(min, max);
               break;
           }
         } else if (level < 5) {
-          expression = MathUtil.getMixExp(1, 25);
+          expression = MathUtil.getMixExp(
+            1,
+            25,
+            includeMultiplicationDivision: includeMultiplicationDivision,
+          );
         } else if (level < 6) {
-          expression = MathUtil.getMixExp(1, 30);
+          expression = MathUtil.getMixExp(
+            1,
+            30,
+            includeMultiplicationDivision: includeMultiplicationDivision,
+          );
         } else {
-          expression = MathUtil.getMixExp(1, 50);
+          expression = MathUtil.getMixExp(
+            1,
+            50,
+            includeMultiplicationDivision: includeMultiplicationDivision,
+          );
         }
         if (expression != null && !list.contains(expression)) {
           list.add(expression);
@@ -474,9 +522,7 @@ class MathUtil {
   }
 }
 
-void main() {
-
-}
+void main() {}
 
 class Expression {
   final String firstOperand;

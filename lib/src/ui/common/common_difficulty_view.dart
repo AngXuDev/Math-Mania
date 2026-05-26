@@ -74,28 +74,55 @@ class CommonDifficultyView extends StatelessWidget {
         SizedBox(height: 16),
         Consumer<ThemeProvider>(
           builder: (context, model, child) {
-            return SwitchListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 4),
-              title: Text(
-                "Timed Mode",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontSize: 18),
-              ),
-              subtitle: Text(
-                model.isTimedMode
-                    ? "Games end when the clock runs out."
-                    : "Practice without a countdown.",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall!
-                    .copyWith(fontSize: 13),
-              ),
-              value: model.isTimedMode,
-              onChanged: (value) {
-                model.changeTimedMode(value);
-              },
+            return Column(
+              children: [
+                SwitchListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+                  title: Text(
+                    "Timed Mode",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontSize: 18),
+                  ),
+                  subtitle: Text(
+                    model.isTimedMode
+                        ? "Games end when the clock runs out."
+                        : "Practice without a countdown.",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontSize: 13),
+                  ),
+                  value: model.isTimedMode,
+                  onChanged: (value) {
+                    model.changeTimedMode(value);
+                  },
+                ),
+                SwitchListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+                  title: Text(
+                    "Multiplication & Division",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontSize: 18),
+                  ),
+                  subtitle: Text(
+                    model.includeMultiplicationDivision
+                        ? "Use all four operations."
+                        : "Use addition and subtraction only.",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontSize: 13),
+                  ),
+                  value: model.includeMultiplicationDivision,
+                  onChanged: (value) {
+                    model.changeMultiplicationDivisionMode(value);
+                  },
+                ),
+              ],
             );
           },
         ),

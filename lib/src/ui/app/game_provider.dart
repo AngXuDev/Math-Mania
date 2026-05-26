@@ -21,6 +21,7 @@ class GameProvider<T> extends TimeProvider {
   final GameCategoryType gameCategoryType;
   final DifficultyType difficultyType;
   final _homeViewModel = GetIt.I<DashboardProvider>();
+  final _themeProvider = GetIt.I<ThemeProvider>();
 
   late List<T> list;
   late int index;
@@ -133,25 +134,54 @@ class GameProvider<T> extends TimeProvider {
   List<T> getList(int level) {
     switch (gameCategoryType) {
       case GameCategoryType.CALCULATOR:
-        return CalculatorRepository.getCalculatorDataList(level);
+        return CalculatorRepository.getCalculatorDataList(
+          level,
+          includeMultiplicationDivision:
+              _themeProvider.includeMultiplicationDivision,
+        );
       case GameCategoryType.GUESS_SIGN:
-        return SignRepository.getSignDataList(level);
+        return SignRepository.getSignDataList(
+          level,
+          includeMultiplicationDivision:
+              _themeProvider.includeMultiplicationDivision,
+        );
       case GameCategoryType.SQUARE_ROOT:
         return SquareRootRepository.getSquareDataList(level);
       case GameCategoryType.MATH_PAIRS:
-        return MathPairsRepository.getMathPairsDataList(level);
+        return MathPairsRepository.getMathPairsDataList(
+          level,
+          includeMultiplicationDivision:
+              _themeProvider.includeMultiplicationDivision,
+        );
       case GameCategoryType.CORRECT_ANSWER:
-        return CorrectAnswerRepository.getCorrectAnswerDataList(level);
+        return CorrectAnswerRepository.getCorrectAnswerDataList(
+          level,
+          includeMultiplicationDivision:
+              _themeProvider.includeMultiplicationDivision,
+        );
       case GameCategoryType.MAGIC_TRIANGLE:
         return MagicTriangleRepository.getTriangleDataProviderList();
       case GameCategoryType.MENTAL_ARITHMETIC:
-        return MentalArithmeticRepository.getMentalArithmeticDataList(level);
+        return MentalArithmeticRepository.getMentalArithmeticDataList(
+          level,
+          includeMultiplicationDivision:
+              _themeProvider.includeMultiplicationDivision,
+        );
       case GameCategoryType.QUICK_CALCULATION:
-        return QuickCalculationRepository.getQuickCalculationDataList(level, 5);
+        return QuickCalculationRepository.getQuickCalculationDataList(
+          level,
+          5,
+          includeMultiplicationDivision:
+              _themeProvider.includeMultiplicationDivision,
+        );
       case GameCategoryType.MATH_GRID:
         return MathGridRepository.getMathGridData(level);
       case GameCategoryType.PICTURE_PUZZLE:
-        return PicturePuzzleRepository.getPicturePuzzleDataList(level);
+        return PicturePuzzleRepository.getPicturePuzzleDataList(
+          level,
+          includeMultiplicationDivision:
+              _themeProvider.includeMultiplicationDivision,
+        );
       case GameCategoryType.NUMBER_PYRAMID:
         return NumberPyramidRepository.getPyramidDataList(level);
     }

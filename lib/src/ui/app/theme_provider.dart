@@ -6,6 +6,7 @@ class ThemeProvider extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.dark;
   DifficultyType difficultyType = DifficultyType.MEDIUM;
   bool isTimedMode = true;
+  bool includeMultiplicationDivision = true;
 
   final SharedPreferences sharedPreferences;
 
@@ -15,6 +16,9 @@ class ThemeProvider extends ChangeNotifier {
     difficultyType =
         DifficultyType.values[sharedPreferences.getInt("difficulty") ?? 2];
     isTimedMode = sharedPreferences.getBool(KeyUtil.IS_TIMED_MODE) ?? true;
+    includeMultiplicationDivision =
+        sharedPreferences.getBool(KeyUtil.INCLUDE_MULTIPLICATION_DIVISION) ??
+            true;
   }
 
   void changeTheme() async {
@@ -36,5 +40,16 @@ class ThemeProvider extends ChangeNotifier {
     this.isTimedMode = isTimedMode;
     notifyListeners();
     await sharedPreferences.setBool(KeyUtil.IS_TIMED_MODE, isTimedMode);
+  }
+
+  Future<void> changeMultiplicationDivisionMode(
+    bool includeMultiplicationDivision,
+  ) async {
+    this.includeMultiplicationDivision = includeMultiplicationDivision;
+    notifyListeners();
+    await sharedPreferences.setBool(
+      KeyUtil.INCLUDE_MULTIPLICATION_DIVISION,
+      includeMultiplicationDivision,
+    );
   }
 }

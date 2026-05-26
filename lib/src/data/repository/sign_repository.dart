@@ -4,15 +4,21 @@ import '/src/utility/math_util.dart';
 class SignRepository {
   static List<int> listHasCode = <int>[];
 
-  static getSignDataList(int level) {
+  static getSignDataList(
+    int level, {
+    bool includeMultiplicationDivision = true,
+  }) {
     List<Sign> list = <Sign>[];
 
     if (level == 1) {
       listHasCode.clear();
     }
     while (list.length < 5) {
-      MathUtil.generate(level, 5 - list.length)
-          .forEach((Expression expression) {
+      MathUtil.generate(
+        level,
+        5 - list.length,
+        includeMultiplicationDivision: includeMultiplicationDivision,
+      ).forEach((Expression expression) {
         Sign? signQandS;
         if (expression.operator2 == null) {
           if (expression.operator1 == "+") {

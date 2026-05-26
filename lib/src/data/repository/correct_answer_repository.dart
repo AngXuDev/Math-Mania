@@ -4,7 +4,10 @@ import '/src/utility/math_util.dart';
 class CorrectAnswerRepository {
   static List<int> listHasCode = <int>[];
 
-  static getCorrectAnswerDataList(int level) {
+  static getCorrectAnswerDataList(
+    int level, {
+    bool includeMultiplicationDivision = true,
+  }) {
     if (level == 1) {
       listHasCode.clear();
     }
@@ -12,8 +15,11 @@ class CorrectAnswerRepository {
     List<CorrectAnswer> list = <CorrectAnswer>[];
 
     while (list.length < 5) {
-      MathUtil.generate(level, 5 - list.length)
-          .forEach((Expression expression) {
+      MathUtil.generate(
+        level,
+        5 - list.length,
+        includeMultiplicationDivision: includeMultiplicationDivision,
+      ).forEach((Expression expression) {
         List<int> x = <int>[];
         int val;
         if (expression.operator2 == null) {

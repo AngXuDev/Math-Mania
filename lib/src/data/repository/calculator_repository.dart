@@ -4,7 +4,10 @@ import '/src/utility/math_util.dart';
 class CalculatorRepository {
   static List<int> listHasCode = <int>[];
 
-  static getCalculatorDataList(int level) {
+  static getCalculatorDataList(
+    int level, {
+    bool includeMultiplicationDivision = true,
+  }) {
     if (level == 1) {
       listHasCode.clear();
     }
@@ -12,8 +15,11 @@ class CalculatorRepository {
     List<Calculator> list = <Calculator>[];
 
     while (list.length < 5) {
-      MathUtil.generate(level, 5 - list.length)
-          .forEach((Expression expression) {
+      MathUtil.generate(
+        level,
+        5 - list.length,
+        includeMultiplicationDivision: includeMultiplicationDivision,
+      ).forEach((Expression expression) {
         Calculator calculatorQandS;
         if (expression.operator2 == null) {
           calculatorQandS = Calculator(

@@ -4,7 +4,10 @@ import '/src/utility/math_util.dart';
 class MentalArithmeticRepository {
   static List<int> listHasCode = <int>[];
 
-  static getMentalArithmeticDataList(int level) {
+  static getMentalArithmeticDataList(
+    int level, {
+    bool includeMultiplicationDivision = true,
+  }) {
     if (level == 1) {
       listHasCode.clear();
     }
@@ -12,7 +15,10 @@ class MentalArithmeticRepository {
     List<MentalArithmetic> list = <MentalArithmetic>[];
 
     while (list.length < 5) {
-      Expression? expression = MathUtil.getMentalExp(level);
+      Expression? expression = MathUtil.getMentalExp(
+        level,
+        includeMultiplicationDivision: includeMultiplicationDivision,
+      );
       if (expression != null) {
         MentalArithmetic mentalArithmeticQandS = MentalArithmetic(
           questionList: [

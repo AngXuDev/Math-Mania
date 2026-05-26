@@ -4,7 +4,10 @@ import '/src/utility/math_util.dart';
 class MathPairsRepository {
   static List<int> listHasCode = <int>[];
 
-  static getMathPairsDataList(int level) {
+  static getMathPairsDataList(
+    int level, {
+    bool includeMultiplicationDivision = true,
+  }) {
     if (level == 1) {
       listHasCode.clear();
     }
@@ -15,8 +18,11 @@ class MathPairsRepository {
     List<Pair> list = <Pair>[];
 
     while (list.length < totalPairs) {
-      MathUtil.getMathPair(level, (totalPairs ~/ 2) - (list.length ~/ 2))
-          .forEach((Expression expression) {
+      MathUtil.getMathPair(
+        level,
+        (totalPairs ~/ 2) - (list.length ~/ 2),
+        includeMultiplicationDivision: includeMultiplicationDivision,
+      ).forEach((Expression expression) {
         Pair mathPair1 = Pair(
             i,
             "${expression.firstOperand} ${expression.operator1} ${expression.secondOperand}",

@@ -38,6 +38,8 @@ enum DialogType {
 class KeyUtil {
   static const IS_DARK_MODE = "isDarkMode";
   static const IS_TIMED_MODE = "isTimedMode";
+  static const INCLUDE_MULTIPLICATION_DIVISION =
+      "includeMultiplicationDivision";
 
   static const String splash = 'Splash';
   static const String dashboard = 'Dashboard';
