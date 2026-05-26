@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeProvider extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.dark;
   DifficultyType difficultyType = DifficultyType.MEDIUM;
+  bool isTimedMode = true;
 
   final SharedPreferences sharedPreferences;
 
@@ -13,6 +14,7 @@ class ThemeProvider extends ChangeNotifier {
         ThemeMode.values[sharedPreferences.getInt(KeyUtil.IS_DARK_MODE) ?? 2];
     difficultyType =
         DifficultyType.values[sharedPreferences.getInt("difficulty") ?? 2];
+    isTimedMode = sharedPreferences.getBool(KeyUtil.IS_TIMED_MODE) ?? true;
   }
 
   void changeTheme() async {
@@ -28,5 +30,11 @@ class ThemeProvider extends ChangeNotifier {
     this.difficultyType = difficultyType;
     notifyListeners();
     await sharedPreferences.setInt("difficulty", difficultyType.index);
+  }
+
+  Future<void> changeTimedMode(bool isTimedMode) async {
+    this.isTimedMode = isTimedMode;
+    notifyListeners();
+    await sharedPreferences.setBool(KeyUtil.IS_TIMED_MODE, isTimedMode);
   }
 }

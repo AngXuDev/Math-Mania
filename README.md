@@ -27,6 +27,9 @@ Train Your Brain enhances your logical thinking while keeping time in mind. Ther
 ## Features
 All the main features of the app are -
 
+- **Timed or Untimed Play**: Use Timed Mode for the original countdown
+  challenge, or turn it off to practice every game without a timer.
+
 ### Math Puzzle Games
 1. **Calculator**: Solve simple equations involving addition, subtraction, division, and multiplication. Find the correct answer in 5 seconds.
 2. **Guess the Sign**: Complete the equation by placing the correct sign between two numbers to reach the given answer.
@@ -55,6 +58,26 @@ This repository is intended for educational and learning purposes only. It is no
 ## Built With
 
 This application is built with [Flutter](https://flutter.dev/), a cross-platform open-source mobile framework by Google, using Dart as the primary language.
+
+## Run Locally in a Browser
+
+You can run Math Mania locally in Chrome without using an Android or iOS emulator:
+
+```powershell
+flutter config --enable-web
+flutter pub get
+flutter run -d chrome
+```
+
+To build a static browser version and serve it locally:
+
+```powershell
+flutter build web
+Set-Location build\web
+python -m http.server 8080
+```
+
+Then open [http://localhost:8080](http://localhost:8080).
 
 ## Roadmap
 

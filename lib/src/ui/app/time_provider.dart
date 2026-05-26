@@ -5,6 +5,7 @@ class TimeProvider with ChangeNotifier {
   TimeProvider({
     required TickerProvider vsync,
     required this.totalTime,
+    required this.isTimed,
   }) {
     _animationController = AnimationController(
       vsync: vsync,
@@ -22,6 +23,7 @@ class TimeProvider with ChangeNotifier {
   }
 
   final int totalTime;
+  final bool isTimed;
 
   DialogType dialogType = DialogType.non;
   TimerStatus timerStatus = TimerStatus.restart;
@@ -31,18 +33,26 @@ class TimeProvider with ChangeNotifier {
   Animation<double> get animation => _animationController;
 
   void startTimer() {
-    _animationController.reverse();
+    if (isTimed) {
+      _animationController.reverse();
+    } else {
+      _animationController.value = 1.0;
+    }
     timerStatus = TimerStatus.play;
     dialogType = DialogType.non;
   }
 
   void pauseTimer() {
-    _animationController.stop();
+    if (isTimed) {
+      _animationController.stop();
+    }
     timerStatus = TimerStatus.pause;
   }
 
   void resumeTimer() {
-    _animationController.reverse();
+    if (isTimed) {
+      _animationController.reverse();
+    }
     timerStatus = TimerStatus.play;
   }
 
@@ -51,12 +61,19 @@ class TimeProvider with ChangeNotifier {
   }
 
   void restartTimer() {
-    _animationController.reverse(from: 1.0);
+    if (isTimed) {
+      _animationController.reverse(from: 1.0);
+    } else {
+      _animationController.value = 1.0;
+    }
     timerStatus = TimerStatus.play;
     dialogType = DialogType.non;
   }
 
   void increase() {
+    if (!isTimed) {
+      return;
+    }
     _animationController.value = _animationController.value + 0.05;
     _animationController.reverse();
   }

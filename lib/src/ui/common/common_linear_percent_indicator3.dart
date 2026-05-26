@@ -18,6 +18,24 @@ class CommonLinearPercentIndicator<T extends GameProvider>
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<T>(context);
+    if (!model.isTimed) {
+      return Container(
+        height: lineHeight,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          gradient: linearGradient,
+        ),
+        child: Text(
+          "UNTIMED",
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Colors.white,
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+              ),
+        ),
+      );
+    }
+
     return AnimatedBuilder(
       animation: model.animation,
       builder: (context, child) {

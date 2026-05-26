@@ -1,5 +1,3 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -21,63 +19,31 @@ Future<void> main() async {
     Animate.restartOnHotReload = true;
   }
 
-  FirebaseAnalytics? firebaseAnalytics;
-  FirebaseCrashlytics? crashlytics;
-
-  // To enable Firebase Crashlytics and Analytics, uncomment the following lines and
-  // the import statements at the top of this file.
-  // See the 'Crashlytics and Analytics' section of the main README.md file for details.
-
-  // try {
-  //   await Firebase.initializeApp(
-  //     options: DefaultFirebaseOptions.currentPlatform,
-  //   );
-  //   firebaseAnalytics = FirebaseAnalytics.instance;
-  //   crashlytics = FirebaseCrashlytics.instance;
-  // } catch (e) {
-  //   debugPrint("Firebase couldn't be initialized: $e");
-  // }
-
-  if (kDebugMode) {
-    // ignore: dead_code
-    await crashlytics?.setCrashlyticsCollectionEnabled(false);
-    // ignore: dead_code
-    await firebaseAnalytics?.setAnalyticsCollectionEnabled(false);
-  }
-
-  // ignore: unnecessary_null_comparison
-  if (crashlytics != null) {
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-      return true;
-    };
-  }
-
   final sharedPreferences = await SharedPreferences.getInstance();
+  final themeProvider = ThemeProvider(sharedPreferences: sharedPreferences);
 
-  setupServiceLocator(sharedPreferences);
+  setupServiceLocator(sharedPreferences, themeProvider);
   runApp(
     MultiProvider(
       providers: [
         // Provider<SharedPreferences>(create: (context) => sharedPreferences),
-        ChangeNotifierProvider(
-          create: (context) =>
-              ThemeProvider(sharedPreferences: sharedPreferences),
+        ChangeNotifierProvider<ThemeProvider>.value(
+          value: themeProvider,
         ),
         ChangeNotifierProvider<DashboardProvider>(
           create: (context) => GetIt.I.get<DashboardProvider>(),
         )
       ],
-      child: MyApp(
-        firebaseAnalytics: firebaseAnalytics,
-      ),
+      child: MyApp(),
     ),
   );
 }
 
-setupServiceLocator(SharedPreferences sharedPreferences) {
+setupServiceLocator(
+  SharedPreferences sharedPreferences,
+  ThemeProvider themeProvider,
+) {
+  GetIt.I.registerSingleton<ThemeProvider>(themeProvider);
   GetIt.I.registerSingleton<DashboardProvider>(
       DashboardProvider(preferences: sharedPreferences));
 }

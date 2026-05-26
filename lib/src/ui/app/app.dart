@@ -1,4 +1,6 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
+import 'dart:math' as math;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '/src/core/app_constant.dart';
@@ -9,10 +11,8 @@ import 'package:provider/provider.dart';
 
 class MyApp extends StatelessWidget {
   final String fontFamily = "Montserrat";
-  final FirebaseAnalytics? firebaseAnalytics;
 
   const MyApp({
-    required this.firebaseAnalytics,
     Key? key,
   }) : super(key: key);
 
@@ -33,12 +33,65 @@ class MyApp extends StatelessWidget {
         themeMode: provider.themeMode,
         initialRoute: KeyUtil.splash,
         routes: appRoutes,
-        // home: DashboardView(),
-        navigatorObservers: [
-          if (firebaseAnalytics != null)
-            FirebaseAnalyticsObserver(analytics: firebaseAnalytics!)
-        ],
+        builder: (context, child) => _BrowserViewport(child: child),
       );
     });
+  }
+}
+
+class _BrowserViewport extends StatelessWidget {
+  const _BrowserViewport({required this.child});
+
+  final Widget? child;
+
+  static const _phoneAspectRatio = 390 / 844;
+  static const _maxPhoneWidth = 430.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDesktopTarget = kIsWeb ||
+        defaultTargetPlatform == TargetPlatform.windows ||
+        defaultTargetPlatform == TargetPlatform.macOS ||
+        defaultTargetPlatform == TargetPlatform.linux;
+
+    if (!isDesktopTarget || child == null) {
+      return child ?? const SizedBox.shrink();
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableWidth = constraints.maxWidth;
+        final availableHeight = constraints.maxHeight;
+
+        var phoneWidth = math.min(_maxPhoneWidth, availableWidth);
+        var phoneHeight = phoneWidth / _phoneAspectRatio;
+
+        if (phoneHeight > availableHeight) {
+          phoneHeight = availableHeight;
+          phoneWidth = phoneHeight * _phoneAspectRatio;
+        }
+
+        final mediaQuery = MediaQuery.of(context);
+
+        return ColoredBox(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: Center(
+            child: SizedBox(
+              width: phoneWidth,
+              height: phoneHeight,
+              child: MediaQuery(
+                data: mediaQuery.copyWith(
+                  size: Size(phoneWidth, phoneHeight),
+                  padding: EdgeInsets.zero,
+                  viewPadding: EdgeInsets.zero,
+                  viewInsets: EdgeInsets.zero,
+                ),
+                child: child!,
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

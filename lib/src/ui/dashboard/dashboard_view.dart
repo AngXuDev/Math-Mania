@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -108,7 +107,8 @@ class _DashboardViewState extends State<DashboardView>
                         ),
                         SizedBox(width: 12),
                         //TODO Remove this when ios version of Math Riddle is live on App Store.
-                        if (Platform.isAndroid)
+                        if (!kIsWeb &&
+                            defaultTargetPlatform == TargetPlatform.android)
                           InkWell(
                             borderRadius: BorderRadius.circular(12),
                             onTap: () {

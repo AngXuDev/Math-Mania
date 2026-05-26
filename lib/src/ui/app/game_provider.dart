@@ -5,6 +5,7 @@ import '/src/core/app_constant.dart';
 import '/src/data/repository/magic_triangle_repository.dart';
 import '/src/data/repository/math_grid_repository.dart';
 import '/src/data/repository/number_pyramid_repository.dart';
+import '/src/ui/app/theme_provider.dart';
 import '/src/ui/app/time_provider.dart';
 import '/src/ui/dashboard/dashboard_provider.dart';
 import '/src/data/repository/calculator_repository.dart';
@@ -34,6 +35,7 @@ class GameProvider<T> extends TimeProvider {
     required this.difficultyType,
   }) : super(
           vsync: vsync,
+          isTimed: GetIt.I<ThemeProvider>().isTimedMode,
           totalTime: KeyUtil.getTimeUtil(
             gameCategoryType,
             difficultyType,
