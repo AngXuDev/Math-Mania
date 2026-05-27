@@ -36,6 +36,11 @@ class NumberPyramidProvider extends GameProvider<NumberPyramid> {
   }
 
   void pyramidBoxInputValue(String value) {
+    if (value == "Clear") {
+      clearWrongValues();
+      return;
+    }
+
     var currentActiveCellIndex =
         currentState.list.indexWhere((cell) => cell.isActive == true);
     if (currentActiveCellIndex == -1) {
@@ -43,7 +48,7 @@ class NumberPyramidProvider extends GameProvider<NumberPyramid> {
     }
     if (value == "Back") {
       // if clear is pressed then empty existing text value and return
-      currentState.list[currentActiveCellIndex].text = "";
+      _clearCell(currentState.list[currentActiveCellIndex]);
       notifyListeners();
       return;
     }
@@ -73,6 +78,16 @@ class NumberPyramidProvider extends GameProvider<NumberPyramid> {
       currentState.list[currentActiveCellIndex].text = value;
     }
 
+    _updateCellFeedback(currentState.list[currentActiveCellIndex]);
+    notifyListeners();
+  }
+
+  void clearWrongValues() {
+    for (final cell in currentState.list) {
+      if (!cell.isHint && cell.isDone && !cell.isCorrect) {
+        _clearCell(cell);
+      }
+    }
     notifyListeners();
   }
 
@@ -99,5 +114,23 @@ class NumberPyramidProvider extends GameProvider<NumberPyramid> {
       }
       notifyListeners();
     }
+  }
+
+  void _updateCellFeedback(NumPyramidCellModel cell) {
+    final expectedValue = cell.numberOnCell.toString();
+    if (cell.text.length < expectedValue.length) {
+      cell.isDone = false;
+      cell.isCorrect = false;
+      return;
+    }
+
+    cell.isDone = true;
+    cell.isCorrect = cell.text == expectedValue;
+  }
+
+  void _clearCell(NumPyramidCellModel cell) {
+    cell.text = "";
+    cell.isDone = false;
+    cell.isCorrect = false;
   }
 }

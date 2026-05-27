@@ -62,9 +62,13 @@ class PyramidNumberButton extends StatelessWidget {
               ? numPyramidCellModel.text
               : numPyramidCellModel.numberOnCell.toString(),
           style: Theme.of(context).textTheme.titleSmall!.copyWith(
-              color: numPyramidCellModel.isHint
-                  ?  Colors.white
-                  : colorTuple.item1),
+                color: numPyramidCellModel.isHint
+                    ? Colors.white
+                    : (numPyramidCellModel.isDone &&
+                            !numPyramidCellModel.isCorrect)
+                        ? Colors.white
+                        : colorTuple.item1,
+              ),
         ),
       ),
     );

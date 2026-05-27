@@ -187,10 +187,15 @@ class PicturePuzzleRepository {
     String op3, {
     bool includeMultiplicationDivision = true,
   }) {
-    if (includeMultiplicationDivision &&
-        ((sign1 == "-" && sign2 == "+") || sign1 == "+" && sign2 == "-")) {
-      sign1 = "*";
-    }
+    final normalizedSigns = getNonCancellingRepeatedShapeSigns(
+      sign1,
+      sign2,
+      includeMultiplicationDivision: includeMultiplicationDivision,
+      multiplyFirstSign: true,
+    );
+    sign1 = normalizedSigns[0];
+    sign2 = normalizedSigns[1];
+
     return PicturePuzzleData(
         picturePuzzleShapeType1,
         sign1,
@@ -210,10 +215,14 @@ class PicturePuzzleRepository {
     String op3, {
     bool includeMultiplicationDivision = true,
   }) {
-    if (includeMultiplicationDivision &&
-        ((sign1 == "-" && sign2 == "+") || sign1 == "+" && sign2 == "-")) {
-      sign2 = "*";
-    }
+    final normalizedSigns = getNonCancellingRepeatedShapeSigns(
+      sign1,
+      sign2,
+      includeMultiplicationDivision: includeMultiplicationDivision,
+      multiplyFirstSign: false,
+    );
+    sign1 = normalizedSigns[0];
+    sign2 = normalizedSigns[1];
 
     return PicturePuzzleData(
         picturePuzzleShapeType2,
@@ -246,6 +255,25 @@ class PicturePuzzleRepository {
   static String getResult(
       String op1, String sign1, String op2, String sign2, String op3) {
     return "${(MathUtil.getPrecedence(sign1) >= MathUtil.getPrecedence(sign2)) ? (MathUtil.evaluate(MathUtil.evaluate(int.parse(op1), sign1, int.parse(op2)), sign2, int.parse(op3))) : (MathUtil.evaluate(int.parse(op1), sign1, MathUtil.evaluate(int.parse(op2), sign2, int.parse(op3))))}";
+  }
+
+  static List<String> getNonCancellingRepeatedShapeSigns(
+    String sign1,
+    String sign2, {
+    required bool includeMultiplicationDivision,
+    required bool multiplyFirstSign,
+  }) {
+    final hasCancellingSigns =
+        (sign1 == "-" && sign2 == "+") || (sign1 == "+" && sign2 == "-");
+    if (!hasCancellingSigns) {
+      return [sign1, sign2];
+    }
+
+    if (includeMultiplicationDivision) {
+      return multiplyFirstSign ? ["*", sign2] : [sign1, "*"];
+    }
+
+    return [sign1, sign1];
   }
 }
 

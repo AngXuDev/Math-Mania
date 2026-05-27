@@ -65,4 +65,33 @@ void main() {
       }
     }
   });
+
+  test('picture puzzle repeated shapes do not cancel themselves out', () {
+    final addSubtractRow = PicturePuzzleRepository.getRowSecond(
+      PicturePuzzleShapeType.SQUARE,
+      '+',
+      PicturePuzzleShapeType.CIRCLE,
+      '-',
+      '7',
+      '3',
+      '3',
+      includeMultiplicationDivision: false,
+    );
+
+    expect(addSubtractRow.sign1, '+');
+    expect(addSubtractRow.sign2, '+');
+
+    final allOperationsRow = PicturePuzzleRepository.getRowThird(
+      '+',
+      PicturePuzzleShapeType.SQUARE,
+      '-',
+      PicturePuzzleShapeType.CIRCLE,
+      '7',
+      '3',
+      '3',
+    );
+
+    expect(allOperationsRow.sign1, '+');
+    expect(allOperationsRow.sign2, '*');
+  });
 }

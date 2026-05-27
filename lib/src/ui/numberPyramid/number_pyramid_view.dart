@@ -306,59 +306,81 @@ class NumberPyramidView extends StatelessWidget {
                       Expanded(
                         flex: 5,
                         child: LayoutBuilder(builder: (context, constraints) {
-                          return GridView(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              childAspectRatio: (constraints.maxWidth / 3) /
-                                  ((constraints.maxHeight - 24) / 4),
-                            ),
-                            padding: const EdgeInsets.only(bottom: 24),
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                          return Column(
                             children: [
-                              ...[
-                                "7",
-                                "8",
-                                "9",
-                                "4",
-                                "5",
-                                "6",
-                                "1",
-                                "2",
-                                "3",
-                                "Done",
-                                "0",
-                                "Back"
-                              ].map(
-                                (e) {
-                                  if (e == "Back") {
-                                    return CommonBackButton(onTab: () {
-                                      context
-                                          .read<NumberPyramidProvider>()
-                                          .pyramidBoxInputValue(e);
-                                    });
-                                  } else if (e == "Done") {
-                                    return CommonClearButton(
-                                        text: "Done",
-                                        onTab: () {
-                                          context
-                                              .read<NumberPyramidProvider>()
-                                              .pyramidBoxInputValue(e);
-                                        });
-                                  } else {
-                                    return CommonTextButton(
-                                      text: e,
-                                      colorTuple: colorTuple,
-                                      onTab: () {
-                                        context
-                                            .read<NumberPyramidProvider>()
-                                            .pyramidBoxInputValue(e);
+                              Expanded(
+                                child: GridView(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    childAspectRatio:
+                                        (constraints.maxWidth / 3) /
+                                            ((constraints.maxHeight - 76) / 4),
+                                  ),
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  children: [
+                                    ...[
+                                      "7",
+                                      "8",
+                                      "9",
+                                      "4",
+                                      "5",
+                                      "6",
+                                      "1",
+                                      "2",
+                                      "3",
+                                      "Clear",
+                                      "0",
+                                      "Back"
+                                    ].map(
+                                      (e) {
+                                        if (e == "Back") {
+                                          return CommonBackButton(onTab: () {
+                                            context
+                                                .read<NumberPyramidProvider>()
+                                                .pyramidBoxInputValue(e);
+                                          });
+                                        } else if (e == "Clear") {
+                                          return CommonClearButton(
+                                              text: "Clear",
+                                              onTab: () {
+                                                context
+                                                    .read<
+                                                        NumberPyramidProvider>()
+                                                    .pyramidBoxInputValue(e);
+                                              });
+                                        } else {
+                                          return CommonTextButton(
+                                            text: e,
+                                            colorTuple: colorTuple,
+                                            onTab: () {
+                                              context
+                                                  .read<NumberPyramidProvider>()
+                                                  .pyramidBoxInputValue(e);
+                                            },
+                                          );
+                                        }
                                       },
-                                    );
-                                  }
-                                },
-                              )
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              SizedBox(
+                                height: 44,
+                                width: double.infinity,
+                                child: CommonClearButton(
+                                  text: "Done",
+                                  onTab: () {
+                                    context
+                                        .read<NumberPyramidProvider>()
+                                        .pyramidBoxInputValue("Done");
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: 24),
                             ],
                           );
                         }),
