@@ -1,4 +1,5 @@
 import '/src/data/models/sign.dart';
+import '/src/core/app_constant.dart';
 import '/src/utility/math_util.dart';
 
 class SignRepository {
@@ -7,6 +8,8 @@ class SignRepository {
   static getSignDataList(
     int level, {
     bool includeMultiplicationDivision = true,
+    DifficultyType difficultyType = DifficultyType.LOW,
+    bool isTimedMode = true,
   }) {
     List<Sign> list = <Sign>[];
 
@@ -18,6 +21,8 @@ class SignRepository {
         level,
         5 - list.length,
         includeMultiplicationDivision: includeMultiplicationDivision,
+        difficultyType: difficultyType,
+        isTimedMode: isTimedMode,
       ).forEach((Expression expression) {
         Sign? signQandS;
         if (expression.operator2 == null) {

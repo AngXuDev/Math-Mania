@@ -138,12 +138,16 @@ class GameProvider<T> extends TimeProvider {
           level,
           includeMultiplicationDivision:
               _themeProvider.includeMultiplicationDivision,
+          difficultyType: difficultyType,
+          isTimedMode: _themeProvider.isTimedMode,
         );
       case GameCategoryType.GUESS_SIGN:
         return SignRepository.getSignDataList(
           level,
           includeMultiplicationDivision:
               _themeProvider.includeMultiplicationDivision,
+          difficultyType: difficultyType,
+          isTimedMode: _themeProvider.isTimedMode,
         );
       case GameCategoryType.SQUARE_ROOT:
         return SquareRootRepository.getSquareDataList(level);
@@ -152,12 +156,16 @@ class GameProvider<T> extends TimeProvider {
           level,
           includeMultiplicationDivision:
               _themeProvider.includeMultiplicationDivision,
+          difficultyType: difficultyType,
+          isTimedMode: _themeProvider.isTimedMode,
         );
       case GameCategoryType.CORRECT_ANSWER:
         return CorrectAnswerRepository.getCorrectAnswerDataList(
           level,
           includeMultiplicationDivision:
               _themeProvider.includeMultiplicationDivision,
+          difficultyType: difficultyType,
+          isTimedMode: _themeProvider.isTimedMode,
         );
       case GameCategoryType.MAGIC_TRIANGLE:
         return MagicTriangleRepository.getTriangleDataProviderList();
@@ -166,6 +174,8 @@ class GameProvider<T> extends TimeProvider {
           level,
           includeMultiplicationDivision:
               _themeProvider.includeMultiplicationDivision,
+          difficultyType: difficultyType,
+          isTimedMode: _themeProvider.isTimedMode,
         );
       case GameCategoryType.QUICK_CALCULATION:
         return QuickCalculationRepository.getQuickCalculationDataList(
@@ -173,6 +183,8 @@ class GameProvider<T> extends TimeProvider {
           5,
           includeMultiplicationDivision:
               _themeProvider.includeMultiplicationDivision,
+          difficultyType: difficultyType,
+          isTimedMode: _themeProvider.isTimedMode,
         );
       case GameCategoryType.MATH_GRID:
         return MathGridRepository.getMathGridData(level);

@@ -1,4 +1,5 @@
 import '/src/data/models/mental_arithmetic.dart';
+import '/src/core/app_constant.dart';
 import '/src/utility/math_util.dart';
 
 class MentalArithmeticRepository {
@@ -7,6 +8,8 @@ class MentalArithmeticRepository {
   static getMentalArithmeticDataList(
     int level, {
     bool includeMultiplicationDivision = true,
+    DifficultyType difficultyType = DifficultyType.LOW,
+    bool isTimedMode = true,
   }) {
     if (level == 1) {
       listHasCode.clear();
@@ -18,6 +21,8 @@ class MentalArithmeticRepository {
       Expression? expression = MathUtil.getMentalExp(
         level,
         includeMultiplicationDivision: includeMultiplicationDivision,
+        difficultyType: difficultyType,
+        isTimedMode: isTimedMode,
       );
       if (expression != null) {
         MentalArithmetic mentalArithmeticQandS = MentalArithmetic(

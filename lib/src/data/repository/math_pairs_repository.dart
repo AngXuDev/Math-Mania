@@ -1,4 +1,5 @@
 import '/src/data/models/math_pairs.dart';
+import '/src/core/app_constant.dart';
 import '/src/utility/math_util.dart';
 
 class MathPairsRepository {
@@ -7,6 +8,8 @@ class MathPairsRepository {
   static getMathPairsDataList(
     int level, {
     bool includeMultiplicationDivision = true,
+    DifficultyType difficultyType = DifficultyType.LOW,
+    bool isTimedMode = true,
   }) {
     if (level == 1) {
       listHasCode.clear();
@@ -22,6 +25,8 @@ class MathPairsRepository {
         level,
         (totalPairs ~/ 2) - (list.length ~/ 2),
         includeMultiplicationDivision: includeMultiplicationDivision,
+        difficultyType: difficultyType,
+        isTimedMode: isTimedMode,
       ).forEach((Expression expression) {
         Pair mathPair1 = Pair(
             i,

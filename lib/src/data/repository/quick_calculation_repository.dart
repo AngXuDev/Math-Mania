@@ -1,4 +1,5 @@
 import '/src/data/models/quick_calculation.dart';
+import '/src/core/app_constant.dart';
 import '/src/utility/math_util.dart';
 
 class QuickCalculationRepository {
@@ -8,6 +9,8 @@ class QuickCalculationRepository {
     int level,
     int noItem, {
     bool includeMultiplicationDivision = true,
+    DifficultyType difficultyType = DifficultyType.LOW,
+    bool isTimedMode = true,
   }) {
     if (level == 1) {
       listHasCode.clear();
@@ -19,6 +22,8 @@ class QuickCalculationRepository {
         level,
         noItem - list.length,
         includeMultiplicationDivision: includeMultiplicationDivision,
+        difficultyType: difficultyType,
+        isTimedMode: isTimedMode,
       ).forEach((Expression expression) {
         QuickCalculation quickCalculationQandS;
         if (expression.operator2 == null) {

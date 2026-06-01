@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:math_mania/src/core/app_constant.dart';
 import 'package:math_mania/src/data/models/picture_puzzle.dart';
 import 'package:math_mania/src/data/repository/picture_puzzle_repository.dart';
 import 'package:math_mania/src/utility/math_util.dart';
@@ -21,6 +22,45 @@ void main() {
 
       expect(expressions.any(hasMultiplicationOrDivision), isFalse);
     }
+  });
+
+  test('untimed add subtract difficulty changes operand size', () {
+    final mediumExpressions = MathUtil.generate(
+      1,
+      20,
+      includeMultiplicationDivision: false,
+      difficultyType: DifficultyType.MEDIUM,
+      isTimedMode: false,
+    );
+
+    for (final expression in mediumExpressions) {
+      expect(int.parse(expression.firstOperand), greaterThanOrEqualTo(10));
+      expect(int.parse(expression.secondOperand), greaterThanOrEqualTo(10));
+    }
+
+    final hardExpressions = MathUtil.generate(
+      1,
+      20,
+      includeMultiplicationDivision: false,
+      difficultyType: DifficultyType.HIGH,
+      isTimedMode: false,
+    );
+
+    for (final expression in hardExpressions) {
+      expect(int.parse(expression.firstOperand), greaterThanOrEqualTo(100));
+      expect(int.parse(expression.secondOperand), greaterThanOrEqualTo(100));
+    }
+  });
+
+  test('untimed hard multiplication division uses double digit range', () {
+    final range = MathUtil.getMultiplicationDivisionRange(
+      1,
+      difficultyType: DifficultyType.HIGH,
+      isTimedMode: false,
+    );
+
+    expect(range.min, 10);
+    expect(range.max, 99);
   });
 
   test('math pairs can exclude multiplication and division', () {

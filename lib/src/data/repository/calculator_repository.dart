@@ -1,4 +1,5 @@
 import '/src/data/models/calculator.dart';
+import '/src/core/app_constant.dart';
 import '/src/utility/math_util.dart';
 
 class CalculatorRepository {
@@ -7,6 +8,8 @@ class CalculatorRepository {
   static getCalculatorDataList(
     int level, {
     bool includeMultiplicationDivision = true,
+    DifficultyType difficultyType = DifficultyType.LOW,
+    bool isTimedMode = true,
   }) {
     if (level == 1) {
       listHasCode.clear();
@@ -19,6 +22,8 @@ class CalculatorRepository {
         level,
         5 - list.length,
         includeMultiplicationDivision: includeMultiplicationDivision,
+        difficultyType: difficultyType,
+        isTimedMode: isTimedMode,
       ).forEach((Expression expression) {
         Calculator calculatorQandS;
         if (expression.operator2 == null) {

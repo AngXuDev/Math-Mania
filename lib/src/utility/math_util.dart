@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import '/src/core/app_constant.dart';
+
 class MathUtil {
   static int evaluate(int x1, String sign, int x3) {
     switch (sign) {
@@ -159,6 +161,8 @@ class MathUtil {
     int min,
     int max, {
     bool includeMultiplicationDivision = true,
+    int? multiplicationMin,
+    int? multiplicationMax,
   }) {
     int operand = int.parse(MathUtil.generateRandomNumber(min, max, 1).first);
     var signList = MathUtil.generateRandomSign1(
@@ -184,10 +188,16 @@ class MathUtil {
         expression = MathUtil.getMinusSignExp(min, max);
         break;
       case "*":
-        expression = MathUtil.getMultiplySignExp(1, 15);
+        expression = MathUtil.getMultiplySignExp(
+          multiplicationMin ?? 1,
+          multiplicationMax ?? 15,
+        );
         break;
       case "/":
-        expression = MathUtil.getDivideSignExp(min, max);
+        expression = MathUtil.getDivideSignExp(
+          multiplicationMin ?? min,
+          multiplicationMax ?? max,
+        );
         break;
     }
     if (expression != null) {
@@ -293,20 +303,24 @@ class MathUtil {
   static Expression? getMentalExp(
     int level, {
     bool includeMultiplicationDivision = true,
+    DifficultyType difficultyType = DifficultyType.LOW,
+    bool isTimedMode = true,
   }) {
-    int min;
-    int max;
-    if (level <= 3) {
-      min = level = 1;
-      max = level = 10;
-    } else if (level <= 6) {
-      min = level = 5;
-      max = level = 20;
-    } else {
-      min = level = 10;
-      max = level = 30;
-    }
-    int operand = int.parse(MathUtil.generateRandomNumber(min, max, 1).first);
+    final addSubtractRange = getAddSubtractRange(
+      level,
+      difficultyType: difficultyType,
+      isTimedMode: isTimedMode,
+    );
+    final multiplicationDivisionRange = getMultiplicationDivisionRange(
+      level,
+      difficultyType: difficultyType,
+      isTimedMode: isTimedMode,
+    );
+    int operand = int.parse(MathUtil.generateRandomNumber(
+      addSubtractRange.min,
+      addSubtractRange.max,
+      1,
+    ).first);
     var signList = MathUtil.generateRandomSign1(
       2,
       includeMultiplicationDivision: includeMultiplicationDivision,
@@ -316,16 +330,28 @@ class MathUtil {
 
     switch (signList[0]) {
       case "+":
-        expression = MathUtil.getPlusSignExp(min, max);
+        expression = MathUtil.getPlusSignExp(
+          addSubtractRange.min,
+          addSubtractRange.max,
+        );
         break;
       case "-":
-        expression = MathUtil.getMinusSignExp(min, max);
+        expression = MathUtil.getMinusSignExp(
+          addSubtractRange.min,
+          addSubtractRange.max,
+        );
         break;
       case "*":
-        expression = MathUtil.getMultiplySignExp(1, 15);
+        expression = MathUtil.getMultiplySignExp(
+          multiplicationDivisionRange.min,
+          multiplicationDivisionRange.max,
+        );
         break;
       case "/":
-        expression = MathUtil.getDivideSignExp(min, max);
+        expression = MathUtil.getDivideSignExp(
+          multiplicationDivisionRange.min,
+          multiplicationDivisionRange.max,
+        );
         break;
     }
     if (expression != null) {
@@ -382,10 +408,20 @@ class MathUtil {
     int level,
     int count, {
     bool includeMultiplicationDivision = true,
+    DifficultyType difficultyType = DifficultyType.LOW,
+    bool isTimedMode = true,
   }) {
     var list = <Expression>[];
-    int min = level == 1 ? 1 : (5 * level) - 5; //1 5 10 15 20 25
-    int max = level == 1 ? 10 : (10 * level); //10 20 30 40 50 60
+    final addSubtractRange = getAddSubtractRange(
+      level,
+      difficultyType: difficultyType,
+      isTimedMode: isTimedMode,
+    );
+    final multiplicationDivisionRange = getMultiplicationDivisionRange(
+      level,
+      difficultyType: difficultyType,
+      isTimedMode: isTimedMode,
+    );
     while (list.length < count) {
       MathUtil.generateRandomSign1(
         count - list.length,
@@ -395,46 +431,82 @@ class MathUtil {
         if (level <= 2) {
           switch (sign) {
             case "+":
-              expression = MathUtil.getPlusSignExp(min, max);
+              expression = MathUtil.getPlusSignExp(
+                addSubtractRange.min,
+                addSubtractRange.max,
+              );
               break;
             case "-":
-              expression = MathUtil.getMinusSignExp(min, max);
+              expression = MathUtil.getMinusSignExp(
+                addSubtractRange.min,
+                addSubtractRange.max,
+              );
               break;
             case "*":
-              expression = MathUtil.getMultiplySignExp(1, 10);
+              expression = MathUtil.getMultiplySignExp(
+                multiplicationDivisionRange.min,
+                multiplicationDivisionRange.max,
+              );
               break;
             case "/":
-              expression = MathUtil.getDivideSignExp(1, 10);
+              expression = MathUtil.getDivideSignExp(
+                multiplicationDivisionRange.min,
+                multiplicationDivisionRange.max,
+              );
               break;
           }
         } else if (level <= 3) {
           switch (sign) {
             case "+":
-              expression = MathUtil.getPlusSignExp(min, max);
+              expression = MathUtil.getPlusSignExp(
+                addSubtractRange.min,
+                addSubtractRange.max,
+              );
               break;
             case "-":
-              expression = MathUtil.getMinusSignExp(min, max);
+              expression = MathUtil.getMinusSignExp(
+                addSubtractRange.min,
+                addSubtractRange.max,
+              );
               break;
             case "*":
-              expression = MathUtil.getMultiplySignExp(1, 15);
+              expression = MathUtil.getMultiplySignExp(
+                multiplicationDivisionRange.min,
+                multiplicationDivisionRange.max,
+              );
               break;
             case "/":
-              expression = MathUtil.getDivideSignExp(1, 15);
+              expression = MathUtil.getDivideSignExp(
+                multiplicationDivisionRange.min,
+                multiplicationDivisionRange.max,
+              );
               break;
           }
         } else {
           switch (sign) {
             case "+":
-              expression = MathUtil.getPlusSignExp(min, max);
+              expression = MathUtil.getPlusSignExp(
+                addSubtractRange.min,
+                addSubtractRange.max,
+              );
               break;
             case "-":
-              expression = MathUtil.getMinusSignExp(min, max);
+              expression = MathUtil.getMinusSignExp(
+                addSubtractRange.min,
+                addSubtractRange.max,
+              );
               break;
             case "*":
-              expression = MathUtil.getMultiplySignExp(5, 30);
+              expression = MathUtil.getMultiplySignExp(
+                multiplicationDivisionRange.min,
+                multiplicationDivisionRange.max,
+              );
               break;
             case "/":
-              expression = MathUtil.getDivideSignExp(5, 30);
+              expression = MathUtil.getDivideSignExp(
+                multiplicationDivisionRange.min,
+                multiplicationDivisionRange.max,
+              );
               break;
           }
         }
@@ -450,10 +522,20 @@ class MathUtil {
     int level,
     int count, {
     bool includeMultiplicationDivision = true,
+    DifficultyType difficultyType = DifficultyType.LOW,
+    bool isTimedMode = true,
   }) {
     var list = <Expression>[];
-    int min = level == 1 ? 1 : (5 * level) - 5; //1 5 10 15 20 25
-    int max = level == 1 ? 10 : (10 * level); //10 20 30 40 50 60
+    final addSubtractRange = getAddSubtractRange(
+      level,
+      difficultyType: difficultyType,
+      isTimedMode: isTimedMode,
+    );
+    final multiplicationDivisionRange = getMultiplicationDivisionRange(
+      level,
+      difficultyType: difficultyType,
+      isTimedMode: isTimedMode,
+    );
     while (list.length < count) {
       MathUtil.generateRandomSign1(
         count - list.length,
@@ -463,54 +545,83 @@ class MathUtil {
         if (level <= 2) {
           switch (sign) {
             case "+":
-              expression = MathUtil.getPlusSignExp(min, max);
+              expression = MathUtil.getPlusSignExp(
+                addSubtractRange.min,
+                addSubtractRange.max,
+              );
               break;
             case "-":
-              expression = MathUtil.getMinusSignExp(min, max);
+              expression = MathUtil.getMinusSignExp(
+                addSubtractRange.min,
+                addSubtractRange.max,
+              );
               break;
             case "*":
-              expression = MathUtil.getMultiplySignExp(1, 15);
+              expression = MathUtil.getMultiplySignExp(
+                multiplicationDivisionRange.min,
+                multiplicationDivisionRange.max,
+              );
               break;
             case "/":
-              expression = MathUtil.getDivideSignExp(min, max);
+              expression = MathUtil.getDivideSignExp(
+                multiplicationDivisionRange.min,
+                multiplicationDivisionRange.max,
+              );
               break;
           }
         } else if (level <= 4) {
           switch (sign) {
             case "+":
-              expression = MathUtil.getPlusSignExp(min, max);
+              expression = MathUtil.getPlusSignExp(
+                addSubtractRange.min,
+                addSubtractRange.max,
+              );
               break;
             case "-":
-              expression = MathUtil.getMinusSignExp(min, max);
+              expression = MathUtil.getMinusSignExp(
+                addSubtractRange.min,
+                addSubtractRange.max,
+              );
               break;
             case "*":
               expression = MathUtil.getMixExp(
-                1,
-                15,
+                addSubtractRange.min,
+                addSubtractRange.max,
                 includeMultiplicationDivision: includeMultiplicationDivision,
+                multiplicationMin: multiplicationDivisionRange.min,
+                multiplicationMax: multiplicationDivisionRange.max,
               );
               break;
             case "/":
-              expression = MathUtil.getDivideSignExp(min, max);
+              expression = MathUtil.getDivideSignExp(
+                multiplicationDivisionRange.min,
+                multiplicationDivisionRange.max,
+              );
               break;
           }
         } else if (level < 5) {
           expression = MathUtil.getMixExp(
-            1,
-            25,
+            addSubtractRange.min,
+            addSubtractRange.max,
             includeMultiplicationDivision: includeMultiplicationDivision,
+            multiplicationMin: multiplicationDivisionRange.min,
+            multiplicationMax: multiplicationDivisionRange.max,
           );
         } else if (level < 6) {
           expression = MathUtil.getMixExp(
-            1,
-            30,
+            addSubtractRange.min,
+            addSubtractRange.max,
             includeMultiplicationDivision: includeMultiplicationDivision,
+            multiplicationMin: multiplicationDivisionRange.min,
+            multiplicationMax: multiplicationDivisionRange.max,
           );
         } else {
           expression = MathUtil.getMixExp(
-            1,
-            50,
+            addSubtractRange.min,
+            addSubtractRange.max,
             includeMultiplicationDivision: includeMultiplicationDivision,
+            multiplicationMin: multiplicationDivisionRange.min,
+            multiplicationMax: multiplicationDivisionRange.max,
           );
         }
         if (expression != null && !list.contains(expression)) {
@@ -520,9 +631,64 @@ class MathUtil {
     }
     return list;
   }
+
+  static OperandRange getAddSubtractRange(
+    int level, {
+    DifficultyType difficultyType = DifficultyType.LOW,
+    bool isTimedMode = true,
+  }) {
+    if (!isTimedMode) {
+      switch (difficultyType) {
+        case DifficultyType.HIGH:
+          return OperandRange(100, 999);
+        case DifficultyType.MEDIUM:
+          return OperandRange(10, 99);
+        case DifficultyType.LOW:
+          break;
+      }
+    }
+
+    return getDefaultRange(level);
+  }
+
+  static OperandRange getMultiplicationDivisionRange(
+    int level, {
+    DifficultyType difficultyType = DifficultyType.LOW,
+    bool isTimedMode = true,
+  }) {
+    if (!isTimedMode && difficultyType == DifficultyType.HIGH) {
+      return OperandRange(10, 99);
+    }
+
+    return getDefaultMultiplicationDivisionRange(level);
+  }
+
+  static OperandRange getDefaultRange(int level) {
+    return OperandRange(
+      level == 1 ? 1 : (5 * level) - 5,
+      level == 1 ? 10 : (10 * level),
+    );
+  }
+
+  static OperandRange getDefaultMultiplicationDivisionRange(int level) {
+    if (level <= 2) {
+      return OperandRange(1, 10);
+    } else if (level <= 3) {
+      return OperandRange(1, 15);
+    } else {
+      return OperandRange(5, 30);
+    }
+  }
 }
 
 void main() {}
+
+class OperandRange {
+  final int min;
+  final int max;
+
+  OperandRange(this.min, this.max);
+}
 
 class Expression {
   final String firstOperand;
