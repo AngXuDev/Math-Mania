@@ -1,5 +1,79 @@
 # Math Mania: Train Your Brain, Improve Math Skills
 
+## Built With
+
+This application is built with [Flutter](https://flutter.dev/), a cross-platform open-source mobile framework by Google, using Dart as the primary language.
+
+## Run Locally in a Browser
+
+You can run Math Mania locally in Chrome without using an Android or iOS
+emulator. These steps are written for Windows users who are not already set up
+for Flutter development.
+
+ALL SETUP BELOW CAN BE DONE WITH CODEX (https://openai.com/codex/) OR CLAUDE (https://claude.com/download) ON FREE TIER
+
+### One-Time Setup
+
+1. Download and install Flutter from [flutter.dev](https://flutter.dev/).
+2. Add Flutter to your Windows `PATH`.
+   - Find the folder where Flutter was installed.
+   - Add the `bin` folder inside it to your user `PATH`.
+   - For example, if Flutter is installed at `C:\Users\YourName\flutter`, add:
+
+```text
+C:\Users\YourName\flutter\bin
+```
+
+3. Close PowerShell, open it again, and check that Flutter works:
+
+```powershell
+flutter --version
+```
+
+4. Go to the Math Mania project folder. For example, if you downloaded it to
+   `C:\Downloads\Math-Mania`, run:
+
+```powershell
+Set-Location C:\Downloads\Math-Mania
+```
+
+5. The first time only, download the project dependencies:
+
+```powershell
+flutter pub get
+```
+
+If Windows asks you to enable Developer Mode for plugin symlinks, turn on
+Developer Mode in Windows settings, then run `flutter pub get` again.
+
+### Launch the Browser Version
+
+After the one-time setup, use these commands whenever you want to play locally:
+
+```powershell
+Set-Location C:\Downloads\Math-Mania
+flutter run -d chrome
+```
+
+Chrome should open automatically with the local web version of Math Mania.
+
+If any of this feels confusing, you can ask Codex or Claude, even on a free
+tier, to help you set up Flutter, add it to `PATH`, and run the project from
+PowerShell. Copy this section into the chat and tell it where you downloaded the
+project.
+
+### Optional Static Browser Build
+
+If you want to build a static browser version and serve it locally:
+
+```powershell
+flutter build web
+Set-Location build\web
+python -m http.server 8080
+```
+
+Then open [http://localhost:8080](http://localhost:8080).
+
 <p align="center">
   <a href="https://github.com/PB2204/Math-Mania">
     <img src="assets/images/math-mania-logo.png" alt="Math Mania Logo">
@@ -28,7 +102,10 @@ Train Your Brain enhances your logical thinking while keeping time in mind. Ther
 All the main features of the app are -
 
 - **Timed or Untimed Play**: Use Timed Mode for the original countdown
-  challenge, or turn it off to practice every game without a timer.
+  challenge, or turn it off to practice every game without a timer. Click the ladder symbol to select
+
+- **Addition and Subtraction Mode Only**: For those learners who have not started their times tables/math facts yet
+  toggle is in the same place as timed/untimed
 
 ### Math Puzzle Games
 1. **Calculator**: Solve simple equations involving addition, subtraction, division, and multiplication. Find the correct answer in 5 seconds.
@@ -47,55 +124,13 @@ All the main features of the app are -
 2. **Picture Puzzle**: Each shape represents a number. Find the number related to each shape and solve the final equation.
 3. **Number Pyramid**: In a number pyramid, the numbers on the lower layers determine the numbers above them. The sum of two consecutive cells is placed in the top cell.
 
-## About the Developer
+## About the Original Developer
 
 Pabitra Banerjee, born on January 22, 2004, is the Founder & CEO of MB WEBBER'S, Code Explorer, and Dev Line Community. He is a Full-Stack AI Engineer with knowledge of Blockchain Technology and a tech enthusiast. Pabitra is dedicated to spreading science and technology to the common people and has a deep passion for astrophysics and mathematics. He actively writes about astrophysics and the latest space missions on Universal Space Missions.
 
 ## Warning: For Learning Purposes Only
 
 This repository is intended for educational and learning purposes only. It is not meant to be directly used for commercial purposes, including publishing on app stores. Please read and follow the guidelines provided in the repository.
-
-## Built With
-
-This application is built with [Flutter](https://flutter.dev/), a cross-platform open-source mobile framework by Google, using Dart as the primary language.
-
-## Run Locally in a Browser
-
-You can run Math Mania locally in Chrome without using an Android or iOS emulator:
-
-```powershell
-flutter config --enable-web
-flutter pub get
-flutter run -d chrome
-```
-
-To build a static browser version and serve it locally:
-
-```powershell
-flutter build web
-Set-Location build\web
-python -m http.server 8080
-```
-
-Then open [http://localhost:8080](http://localhost:8080).
-
-## Roadmap
-
-See the [open issues](https://github.com/PB2204/Math-Mania/issues) for a list of proposed features and known issues.
-
-## Contributing
-
-Contributions are welcome and greatly appreciated!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## Contact
-
-[Pabitra Banerjee](https://www.linkedin.com/in/pabitra-banerjee)
 
 ## This app uses the following open-source libraries
 
